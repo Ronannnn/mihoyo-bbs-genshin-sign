@@ -2,18 +2,17 @@ package util
 
 import (
 	"fmt"
-	"mihoyo-bbs-genshin-sign/config"
 	"net/http"
 	"reflect"
 )
 
-func AddUrlQueryParametersFromStruct(req *http.Request, data interface{}) {
+func AddUrlQueryParametersFromStruct(req *http.Request, data interface{}, tagName string) {
 	reqQuery := req.URL.Query()
 	t := reflect.TypeOf(data)
 	v := reflect.ValueOf(data)
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
-		tag := field.Tag.Get(config.HttpQueryTagName)
+		tag := field.Tag.Get(tagName)
 		reqQuery.Add(tag, fmt.Sprintf("%v", v.Field(i).Interface()))
 	}
 	req.URL.RawQuery = reqQuery.Encode()
@@ -26,12 +25,12 @@ func AddUrlQueryParametersFromMap(req *http.Request, data map[string]string) {
 	}
 }
 
-func AddHeadersFromStruct(req *http.Request, data interface{}) {
+func AddHeadersFromStruct(req *http.Request, data interface{}, tagName string) {
 	t := reflect.TypeOf(data)
 	v := reflect.ValueOf(data)
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
-		tag := field.Tag.Get(config.HttpQueryTagName)
+		tag := field.Tag.Get(tagName)
 		req.Header.Set(tag, fmt.Sprintf("%v", v.Field(i).Interface()))
 	}
 }

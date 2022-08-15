@@ -25,7 +25,7 @@ func GetSignInfo(uid, cookie string) (signInfo *model.SignInfo, err error) {
 		ActId:  config.ActId,
 		Uid:    uid,
 		Region: getRegionFromUid(uid),
-	})
+	}, config.HttpQueryTagName)
 	util.AddHeadersFromMap(req, map[string]string{
 		"Cookie":   cookie,
 		"SignHost": config.SignHost,
@@ -58,7 +58,7 @@ func GetSignAwardList() (signAwardList *model.SignAwardList, err error) {
 	}
 	util.AddUrlQueryParametersFromStruct(req, model.SignAwardsInfoReqParam{
 		ActId: config.ActId,
-	})
+	}, config.HttpQueryTagName)
 
 	// request and parse response
 	var resp *http.Response
@@ -89,7 +89,7 @@ func Sign(uid, cookie string) (err error) {
 		ActId:  config.ActId,
 		Uid:    uid,
 		Region: getRegionFromUid(uid),
-	})
+	}, config.HttpQueryTagName)
 	util.AddHeadersFromMap(req, map[string]string{
 		"Cookie":            cookie,
 		"SignHost":          config.SignHost,
@@ -120,7 +120,6 @@ func Sign(uid, cookie string) (err error) {
 
 func getDs() string {
 	t := time.Now().Unix()
-	println(t)
 	r := util.GetRandString(6)
 	hash := md5.Sum([]byte(fmt.Sprintf("salt=%s&t=%d&r=%s", config.DsSalt, t, r)))
 	c := hex.EncodeToString(hash[:])
