@@ -112,7 +112,7 @@ func Sign(uid, cookie string) (err error) {
 	if err = json.Unmarshal(body, &respData); err != nil {
 		return
 	}
-	if respData.Retcode != 0 {
+	if respData.Retcode != 0 && respData.Retcode != model.AlreadySigned {
 		return fmt.Errorf("retcode: %d, message: %s", respData.Retcode, respData.Message)
 	}
 	return

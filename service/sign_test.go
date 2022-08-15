@@ -1,14 +1,18 @@
 package service_test
 
 import (
-	"fmt"
 	"github.com/stretchr/testify/assert"
 	"mihoyo-bbs-genshin-sign/service"
 	"testing"
 )
 
+const (
+	uid    = "your uid"
+	cookie = "your cookie"
+)
+
 func TestGetSignInfo(t *testing.T) {
-	_, err := service.GetSignInfo("your uid", "your cookie")
+	_, err := service.GetSignInfo(uid, cookie)
 	assert.NoError(t, err)
 }
 
@@ -19,6 +23,6 @@ func TestGetSignAwardList(t *testing.T) {
 }
 
 func TestSign(t *testing.T) {
-	err := service.Sign("your uid", "your cookie")
-	fmt.Println(err)
+	err := service.Sign(uid, cookie)
+	assert.NoError(t, err)
 }
