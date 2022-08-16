@@ -1,3 +1,4 @@
+#docker build --platform linux/arm64/v8 -t ronannnn/mihoyo-bbs-genshin-sign:0.1.0 -f Dockerfile .
 docker build -t ronannnn/mihoyo-bbs-genshin-sign:0.1.0 -f Dockerfile .
 docker push ronannnn/mihoyo-bbs-genshin-sign:0.1.0
 # docker save -o image-go.tar ronannnn/jrs-go:1.0
