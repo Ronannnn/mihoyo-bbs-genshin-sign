@@ -1,17 +1,10 @@
 package main
 
 import (
-	"mihoyo-bbs-genshin-sign/config"
+	"context"
 	"mihoyo-bbs-genshin-sign/server"
 )
 
-var log = config.Logger
-
 func main() {
-	log.Info("cron started")
-	if c, err := server.NewCronTask(); err != nil {
-		log.Error(err)
-	} else {
-		c.Run()
-	}
+	server.NewServer(context.Background())
 }

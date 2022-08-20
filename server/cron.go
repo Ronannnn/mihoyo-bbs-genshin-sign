@@ -2,11 +2,8 @@ package server
 
 import (
 	"github.com/robfig/cron/v3"
-	"mihoyo-bbs-genshin-sign/config"
 	"mihoyo-bbs-genshin-sign/service"
 )
-
-var log = config.Logger
 
 func NewCronTask() (c *cron.Cron, err error) {
 	c = cron.New()
