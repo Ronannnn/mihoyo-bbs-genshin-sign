@@ -1,0 +1,19 @@
+# CMS Configurations
+
+system:
+  addr: ''
+
+jwt:
+  duration: 168
+  secret: "" # any string is ok
+
+db:
+  dbFilename: ''
+
+zap:
+  level: ""
+  prefix: ""
+  directory: ""
+  filename: ""
+  log-in-console: false
+  log-in-rotatefile: false

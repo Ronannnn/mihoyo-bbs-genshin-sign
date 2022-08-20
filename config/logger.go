@@ -1,12 +1,11 @@
 package config
 
 import (
+	"gopkg.in/natefinch/lumberjack.v2"
 	"mihoyo-bbs-genshin-sign/util"
 	"os"
-	"path"
 	"time"
 
-	zaprotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -14,86 +13,65 @@ import (
 var Logger *zap.SugaredLogger
 
 type zapConf struct {
-	Level           zapcore.Level `yaml:"level"`
-	Prefix          string        `yaml:"prefix"`
-	Directory       string        `yaml:"directory"`
-	LinkName        string        `yaml:"link-name"`
-	EncodeLevel     string        `yaml:"encode-level"`
-	LogInConsole    bool          `yaml:"log-in-console"`
-	LogInRotatefile bool          `yaml:"log-in-rotatefile"`
+	Level           string `mapstructure:"level"`
+	Directory       string `mapstructure:"directory"`
+	Filename        string `mapstructure:"filename"`
+	LogInConsole    bool   `mapstructure:"log-in-console"`
+	LogInRotatefile bool   `mapstructure:"log-in-rotatefile"`
 }
 
-var zapConfig = &zapConf{
-	Level:           zapcore.InfoLevel,
-	Prefix:          "[JRS]",
-	Directory:       "logs",
-	LinkName:        "latest_log",
-	EncodeLevel:     "LowercaseLevelEncoder",
-	LogInConsole:    true,
-	LogInRotatefile: true,
-}
-
-func init() {
+func initLogger(zapConfig zapConf) (err error) {
+	var level zapcore.Level
+	if level, err = zapcore.ParseLevel(zapConfig.Level); err != nil {
+		return
+	}
+	var writeSyncer zapcore.WriteSyncer
+	if writeSyncer, err = newWriteSyncer(zapConfig); err != nil {
+		return
+	}
 	core := zapcore.NewCore(
-		zapcore.NewConsoleEncoder(newEncoderConfig()),
-		newWriteSyncer(),
-		zapConfig.Level,
+		zapcore.NewConsoleEncoder(zapcore.EncoderConfig{
+			MessageKey:    "message",
+			LevelKey:      "level",
+			TimeKey:       "time",
+			NameKey:       "logger",
+			CallerKey:     "caller",
+			StacktraceKey: "stacktrace",
+			LineEnding:    zapcore.DefaultLineEnding,
+			EncodeLevel:   zapcore.CapitalColorLevelEncoder,
+			EncodeTime: func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+				enc.AppendString(t.Format(LogTimeFormat))
+			},
+			EncodeDuration: zapcore.SecondsDurationEncoder,
+			EncodeCaller:   zapcore.ShortCallerEncoder,
+		}),
+		writeSyncer,
+		level,
 	)
 	Logger = zap.New(core, zap.AddCaller()).Sugar()
-	Logger.Info("Logger initialized")
+	return
 }
 
-// newWriteSyncer get multiple write syncer according to 'LogInConsole' and 'LogInRotatefile' in conf
-func newWriteSyncer() zapcore.WriteSyncer {
+// newWriteSyncer get multiple write syncers
+// 1. stdout if LogInConsole is enabled
+// 2. RotateLogs if LogInRotatefile is enabled
+func newWriteSyncer(zapConfig zapConf) (syncer zapcore.WriteSyncer, err error) {
 	var multiWriter []zapcore.WriteSyncer
 	if zapConfig.LogInConsole {
 		multiWriter = append(multiWriter, zapcore.AddSync(os.Stdout))
 	}
 	if zapConfig.LogInRotatefile {
-		if createErr := util.CreateDirs(zapConfig.Directory); createErr != nil {
-			panic(createErr)
+		// create directory for storing log files
+		if err = util.CreateDirs(zapConfig.Directory); err != nil {
+			return
 		}
-		var fileWriter *zaprotatelogs.RotateLogs
-		fileWriter, _ = zaprotatelogs.New(
-			path.Join(zapConfig.Directory, "%Y-%m-%d.log"),
-			zaprotatelogs.WithLinkName(zapConfig.LinkName),
-			zaprotatelogs.WithMaxAge(7*24*time.Hour),
-			zaprotatelogs.WithRotationTime(24*time.Hour),
-		)
+		var fileWriter = &lumberjack.Logger{
+			Filename:   zapConfig.Filename,
+			MaxSize:    1, // rotate when the size gets 1MB
+			MaxBackups: 0, // 0 backup: keep all old files
+			MaxAge:     0, // 0 days: keep all old files
+		}
 		multiWriter = append(multiWriter, zapcore.AddSync(fileWriter))
 	}
-	return zapcore.NewMultiWriteSyncer(multiWriter...)
-}
-
-func newEncoderConfig() (encoderConf zapcore.EncoderConfig) {
-	encoderConf = zapcore.EncoderConfig{
-		MessageKey:     "message",
-		LevelKey:       "level",
-		TimeKey:        "time",
-		NameKey:        "logger",
-		CallerKey:      "caller",
-		StacktraceKey:  "stacktrace",
-		LineEnding:     zapcore.DefaultLineEnding,
-		EncodeLevel:    zapcore.LowercaseLevelEncoder,
-		EncodeTime:     customizedTimeEncoder,
-		EncodeDuration: zapcore.SecondsDurationEncoder,
-		EncodeCaller:   zapcore.ShortCallerEncoder,
-	}
-	switch zapConfig.EncodeLevel {
-	case "LowercaseLevelEncoder": // 小写编码器(默认)
-		encoderConf.EncodeLevel = zapcore.LowercaseLevelEncoder
-	case "LowercaseColorLevelEncoder": // 小写编码器带颜色
-		encoderConf.EncodeLevel = zapcore.LowercaseColorLevelEncoder
-	case "CapitalLevelEncoder": // 大写编码器
-		encoderConf.EncodeLevel = zapcore.CapitalLevelEncoder
-	case "CapitalColorLevelEncoder": // 大写编码器带颜色
-		encoderConf.EncodeLevel = zapcore.CapitalColorLevelEncoder
-	default:
-		encoderConf.EncodeLevel = zapcore.LowercaseLevelEncoder
-	}
-	return encoderConf
-}
-
-func customizedTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
-	enc.AppendString(t.Format(zapConfig.Prefix + " " + "2006-01-02 15:04:05.000"))
+	return zapcore.NewMultiWriteSyncer(multiWriter...), nil
 }

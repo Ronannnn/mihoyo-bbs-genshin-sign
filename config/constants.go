@@ -28,3 +28,18 @@ const (
 const (
 	HttpQueryTagName = "param"
 )
+
+// const for gin
+const (
+	DefaultConfigFilename = "config.yaml"
+	EnvConfigKey          = "MIHOYO_BBS_GENSHIN_SIGN"
+
+	Version      = "0.0.1"
+	Project      = "mihoyo-bbs-genshin-sign-backend"
+	CtxKeyUserId = "userId"
+	CtxKeyUserCn = "userCn"
+)
+
+const (
+	LogTimeFormat = "2006-01-02 15:04:05.000"
+)

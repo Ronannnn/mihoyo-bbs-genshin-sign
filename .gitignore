@@ -2,3 +2,5 @@
 latest_log
 logs
 docker.sh
+*.db
+config.yaml
