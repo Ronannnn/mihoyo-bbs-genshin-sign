@@ -1,6 +1,7 @@
 package config
 
 import (
+	"database/sql"
 	"gorm.io/driver/sqlite"
 
 	"go.uber.org/zap"
@@ -17,6 +18,9 @@ type DbConf struct {
 }
 
 func initDb(dbConf DbConf) (err error) {
+	if err = CloseDb(Db); err != nil {
+		return
+	}
 	if Db, err = gorm.Open(sqlite.Open(dbConf.DbFilename), &gorm.Config{
 		Logger:                                   logger.Default.LogMode(logger.Silent),
 		DisableForeignKeyConstraintWhenMigrating: true,
@@ -35,4 +39,15 @@ func initDb(dbConf DbConf) (err error) {
 
 	Logger.Info("Database initialized")
 	return
+}
+
+func CloseDb(db *gorm.DB) (err error) {
+	if db == nil {
+		return
+	}
+	var sqlDb *sql.DB
+	if sqlDb, err = db.DB(); err != nil {
+		return
+	}
+	return sqlDb.Close()
 }
