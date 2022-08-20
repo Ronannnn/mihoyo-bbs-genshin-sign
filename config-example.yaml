@@ -12,7 +12,6 @@ db:
 
 zap:
   level: ""
-  prefix: ""
   directory: ""
   filename: ""
   log-in-console: false
