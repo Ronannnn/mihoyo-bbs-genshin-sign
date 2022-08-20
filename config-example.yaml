@@ -4,7 +4,7 @@ system:
   addr: ''
 
 db:
-  dbFilename: ''
+  db-filename: ''
 
 zap:
   level: ""
