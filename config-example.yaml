@@ -3,10 +3,6 @@
 system:
   addr: ''
 
-jwt:
-  duration: 168
-  secret: "" # any string is ok
-
 db:
   dbFilename: ''
 

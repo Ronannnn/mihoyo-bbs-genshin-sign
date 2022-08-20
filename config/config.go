@@ -16,16 +16,10 @@ type Config struct {
 	System systemConf `mapstructure:"system"`
 	Zap    zapConf    `mapstructure:"zap"`
 	Db     DbConf     `mapstructure:"db"`
-	Jwt    jwtConf    `mapstructure:"jwt"`
 }
 
 type systemConf struct {
 	Addr string `mapstructure:"addr"`
-}
-
-type jwtConf struct {
-	Duration int    `mapstructure:"duration"`
-	Secret   string `mapstructure:"secret"`
 }
 
 func init() {
