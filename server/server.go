@@ -30,24 +30,24 @@ func NewServer(ctx context.Context) {
 			if err == http.ErrServerClosed {
 				log.Info("Web server shutdown completely")
 			} else {
-				log.Error("Web server closed with exceptions", zap.Error(err))
+				log.Error("Web server closed with exceptions", err)
 			}
 		}
 	}()
 
 	go func() {
 		if cron, err := NewCronTask(); err != nil {
-			log.Error("Fail to create cron task", zap.Error(err))
+			log.Error("Fail to create cron task", err)
 		} else {
 			cron.Run()
 		}
 	}()
 
 	<-ctx.Done()
-	log.Info("http: shutting down web server")
+	log.Info("http: shutting down the server")
 	err := server.Close()
 
 	if err != nil {
-		log.Error("Fail to shutdown the server", zap.Error(err))
+		log.Error("Fail to shutdown the server", err)
 	}
 }

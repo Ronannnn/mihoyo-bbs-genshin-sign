@@ -1,0 +1,14 @@
+GET {{api-v1}}/sign
+Accept: application/json
+
+###
+POST {{api-v1}}/sign
+Content-Type: application/json
+
+{
+  "uid": "100100100",
+  "cookie": "cookie",
+  "email": "email"
+}
+
+###

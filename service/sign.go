@@ -40,7 +40,7 @@ func GetSignInfo(uid, cookie string) (signInfo *model.SignInfo, err error) {
 	if body, err = ioutil.ReadAll(resp.Body); err != nil {
 		return
 	}
-	var respData = model.Response{Data: signInfo}
+	var respData = model.MihoyoResponse{Data: signInfo}
 	if err = json.Unmarshal(body, &respData); err != nil {
 		return
 	}
@@ -69,7 +69,7 @@ func GetSignAwardList() (signAwardList *model.SignAwardList, err error) {
 	if body, err = ioutil.ReadAll(resp.Body); err != nil {
 		return
 	}
-	var respData = model.Response{Data: signAwardList}
+	var respData = model.MihoyoResponse{Data: signAwardList}
 	if err = json.Unmarshal(body, &respData); err != nil {
 		return
 	}
@@ -108,7 +108,7 @@ func Sign(uid, cookie string) (err error) {
 	if body, err = ioutil.ReadAll(resp.Body); err != nil {
 		return
 	}
-	var respData = model.Response{}
+	var respData = model.MihoyoResponse{}
 	if err = json.Unmarshal(body, &respData); err != nil {
 		return
 	}
