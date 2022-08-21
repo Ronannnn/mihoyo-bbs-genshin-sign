@@ -1,6 +1,5 @@
 .idea
-latest_log
-logs
 docker.sh
+*.log
 *.db
 config.yaml

@@ -1,9 +1,7 @@
 package config
 
 import (
-	"flag"
-	"fmt"
-	"os"
+	"mihoyo-bbs-genshin-sign/util"
 	"time"
 
 	"github.com/fsnotify/fsnotify"
@@ -13,13 +11,29 @@ import (
 var Conf Config
 
 type Config struct {
-	System systemConf `mapstructure:"system"`
-	Zap    zapConf    `mapstructure:"zap"`
-	Db     DbConf     `mapstructure:"db"`
+	System systemConf `mapstructure:"system" yaml:"system"`
+	Zap    zapConf    `mapstructure:"zap" yaml:"zap"`
+	Db     DbConf     `mapstructure:"db" yaml:"db"`
 }
 
 type systemConf struct {
-	Addr string `mapstructure:"addr"`
+	Addr string `mapstructure:"addr" yaml:"addr"`
+}
+
+var defaultConfig = Config{
+	System: systemConf{
+		Addr: "0.0.0.0:5001",
+	},
+	Zap: zapConf{
+		Level:           "info",
+		Directory:       "logs",
+		Filename:        "latest.log",
+		LogInConsole:    true,
+		LogInRotatefile: false,
+	},
+	Db: DbConf{
+		DbFilename: "sign.db",
+	},
 }
 
 func init() {
@@ -28,25 +42,34 @@ func init() {
 
 	// read and load config
 	var err error
-	v := viper.New()
-	v.SetConfigFile(getConfigFilePath())
-	if err = v.ReadInConfig(); err != nil {
-		panic(err)
+	viper.AddConfigPath(DefaultConfigPath)
+	viper.SetConfigName(DefaultConfigName)
+	if err = viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			// Config file not found
+			// write to local file
+			if err = util.WriteYaml(DefaultConfigFilename, defaultConfig); err != nil {
+				panic(err)
+			}
+		} else {
+			panic(err)
+		}
 	}
-	if err = loadConfig(v); err != nil {
+	if err = loadConfig(); err != nil {
 		panic(err)
 	}
 	// watching and updating Conf without application restart
-	v.OnConfigChange(func(e fsnotify.Event) {
-		if err = loadConfig(v); err != nil {
+	viper.OnConfigChange(func(e fsnotify.Event) {
+		if err = loadConfig(); err != nil {
 			panic(err)
 		}
 	})
-	v.WatchConfig()
+	viper.WatchConfig()
 }
 
-func loadConfig(v *viper.Viper) (err error) {
-	if err = v.Unmarshal(&Conf); err != nil {
+func loadConfig() (err error) {
+	println("load config")
+	if err = viper.Unmarshal(&Conf); err != nil {
 		return
 	}
 	if err = initLogger(Conf.Zap); err != nil {
@@ -57,27 +80,5 @@ func loadConfig(v *viper.Viper) (err error) {
 		return
 	}
 	Logger.Debug("Db loaded")
-	return
-}
-
-// getConfigFilePath get configuration file path
-// priority: command line >> environment variable >> default value
-func getConfigFilePath() (config string) {
-	// from command line
-	flag.StringVar(&config, "c", "", "input config file path")
-	flag.Parse()
-	if config != "" {
-		fmt.Println("Config file passing from command line:", config)
-		return
-	}
-	// from env var
-	if env := os.Getenv(EnvConfigKey); env != "" {
-		config = env
-		fmt.Println("Config file passing from environment variable:", config)
-		return
-	}
-	// from default value
-	config = DefaultConfigFilename
-	fmt.Println("Default config file:", config)
 	return
 }

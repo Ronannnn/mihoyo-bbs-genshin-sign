@@ -14,7 +14,7 @@ var (
 )
 
 type DbConf struct {
-	DbFilename string `mapstructure:"db-filename"`
+	DbFilename string `mapstructure:"db-filename" yaml:"db-filename"`
 }
 
 func initDb(dbConf DbConf) (err error) {

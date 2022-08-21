@@ -31,8 +31,10 @@ const (
 
 // const for gin
 const (
-	DefaultConfigFilename = "config.yaml"
-	EnvConfigKey          = "MIHOYO_BBS_GENSHIN_SIGN"
+	DefaultConfigName     = "config"
+	DefaultConfigType     = "yaml"
+	DefaultConfigFilename = DefaultConfigName + "." + DefaultConfigType
+	DefaultConfigPath     = "./"
 
 	Version      = "0.0.1"
 	Project      = "mihoyo-bbs-genshin-sign-backend"
