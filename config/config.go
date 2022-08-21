@@ -68,7 +68,6 @@ func init() {
 }
 
 func loadConfig() (err error) {
-	println("load config")
 	if err = viper.Unmarshal(&Conf); err != nil {
 		return
 	}

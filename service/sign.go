@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 	"io/ioutil"
 	"mihoyo-bbs-genshin-sign/config"
 	"mihoyo-bbs-genshin-sign/model"
@@ -133,4 +134,17 @@ func getRegionFromUid(uid string) string {
 	} else {
 		return config.RegionCnGf
 	}
+}
+
+func SignCronTask(db *gorm.DB) (err error) {
+	var signItemList []model.SignItem
+	if signItemList, err = model.FindAllSignItems(db); err != nil {
+		return
+	}
+	for _, signItem := range signItemList {
+		if err = Sign(signItem.Uid, signItem.Cookie); err != nil {
+			log.Error(err)
+		}
+	}
+	return
 }
