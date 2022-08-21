@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+
+  server:
+    image: ronannnn/mihoyo-bbs-genshin-sign:latest # you can use this image directly, or you can build and tag
+    restart: always
+    container_name: mihoyo-bbs-genshin-sign
+    ports:
+      - "5001:5001"
