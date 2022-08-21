@@ -1,0 +1,120 @@
+openapi: 3.0.0
+info:
+  title: Harbor API
+  description: These APIs provide services for manipulating Mihoyo bbs genshin impact sign project.
+  version: '0.1.0'
+servers:
+  - url: http://localhost:5001/api/v1/
+    description: Production Server
+paths:
+  /sign:
+    get:
+      summary: Get all sign items
+      description: Get all registered sign items including uid, cookie and email
+      tags:
+        - Sign
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Response'
+    post:
+      summary: Create a sign item
+      description: Create a sign item
+      tags:
+        - Sign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignItem'
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    put:
+      summary: Update a sign item
+      description: Update a sign item
+      tags:
+        - Sign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignItem'
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+  /sign/{id}:
+    delete:
+      summary: Delete a sign item
+      description: Delete a sign item
+      tags:
+        - Sign
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+          description: sign item id to delete
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+components:
+  schemas:
+    Response:
+      description: Common response
+      type: object
+      required:
+        - error
+      properties:
+        success:
+          type: boolean
+          description: Whether the request is successful
+        data:
+          type: object
+          description: Any type of data returned by the request
+        errorCode:
+          type: string
+          description: The error code
+        errorMessage:
+          type: string
+          description: The error message
+        showType:
+          type: integer
+          description: The error type
+    SignItem:
+      type: object
+      description: Sign item
+      required:
+        - uid
+        - cookie
+        - email
+      properties:
+        uid:
+          type: string
+          description: UID of your genshin impact
+        cookie:
+          type: string
+          description: Cookie after login in bbs
+        email:
+          type: string
+          description: email that messages will be sent to
