@@ -29,7 +29,7 @@ var defaultConfig = Config{
 		Directory:       "logs",
 		Filename:        "latest.log",
 		LogInConsole:    true,
-		LogInRotatefile: false,
+		LogInRotatefile: true,
 	},
 	Db: DbConf{
 		DbFilename: "sign.db",
