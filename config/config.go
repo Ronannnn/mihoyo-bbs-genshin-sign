@@ -26,7 +26,7 @@ var defaultConfig = Config{
 	},
 	Zap: zapConf{
 		Level:           "info",
-		Directory:       "logs",
+		LogDir:          "sign_log",
 		Filename:        "latest.log",
 		LogInConsole:    true,
 		LogInRotatefile: true,
@@ -40,8 +40,13 @@ func init() {
 	// set timezone to utc
 	time.Local = time.FixedZone("utc", 0)
 
-	// read and load config
 	var err error
+	// init all dir
+	if err = util.CreateDirs(DefaultConfigPath, DefaultDataPath); err != nil {
+		panic(err)
+	}
+
+	// read and load config
 	viper.AddConfigPath(DefaultConfigPath)
 	viper.SetConfigName(DefaultConfigName)
 	if err = viper.ReadInConfig(); err != nil {
@@ -79,7 +84,7 @@ func loadConfig() (err error) {
 		return
 	}
 	Logger.Debug("Log loaded")
-	if err = initDb(Conf.Db); err != nil {
+	if err = initDb(Conf.System, Conf.Db); err != nil {
 		return
 	}
 	Logger.Debug("Db loaded")

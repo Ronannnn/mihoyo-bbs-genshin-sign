@@ -8,7 +8,7 @@ db:
 
 zap:
   level: ""
-  directory: ""
+  log-dir: ""
   filename: ""
   log-in-console: false
   log-in-rotatefile: false

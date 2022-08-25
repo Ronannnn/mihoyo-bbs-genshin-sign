@@ -33,8 +33,9 @@ const (
 const (
 	DefaultConfigName     = "config"
 	DefaultConfigType     = "yaml"
-	DefaultConfigFilename = DefaultConfigName + "." + DefaultConfigType
-	DefaultConfigPath     = "./"
+	DefaultConfigPath     = "./sign_config/"
+	DefaultConfigFilename = DefaultConfigPath + DefaultConfigName + "." + DefaultConfigType
+	DefaultDataPath       = "./sign_data/"
 
 	Version      = "0.0.1"
 	Project      = "mihoyo-bbs-genshin-sign-backend"

@@ -3,6 +3,7 @@ package config
 import (
 	"database/sql"
 	"gorm.io/driver/sqlite"
+	"path/filepath"
 
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -17,11 +18,11 @@ type DbConf struct {
 	DbFilename string `mapstructure:"db-filename" yaml:"db-filename"`
 }
 
-func initDb(dbConf DbConf) (err error) {
+func initDb(sysConf systemConf, dbConf DbConf) (err error) {
 	if err = CloseDb(Db); err != nil {
 		return
 	}
-	if Db, err = gorm.Open(sqlite.Open(dbConf.DbFilename), &gorm.Config{
+	if Db, err = gorm.Open(sqlite.Open(filepath.Join(DefaultDataPath, dbConf.DbFilename)), &gorm.Config{
 		Logger:                                   logger.Default.LogMode(logger.Silent),
 		DisableForeignKeyConstraintWhenMigrating: true,
 	}); err != nil {

@@ -14,7 +14,7 @@ var Logger *zap.SugaredLogger
 
 type zapConf struct {
 	Level           string `mapstructure:"level" yaml:"level"`
-	Directory       string `mapstructure:"directory" yaml:"directory"`
+	LogDir          string `mapstructure:"log-dir" yaml:"log-dir"`
 	Filename        string `mapstructure:"filename" yaml:"filename"`
 	LogInConsole    bool   `mapstructure:"log-in-console" yaml:"log-in-console"`
 	LogInRotatefile bool   `mapstructure:"log-in-rotatefile" yaml:"log-in-rotatefile"`
@@ -62,7 +62,7 @@ func newWriteSyncer(zapConfig zapConf) (syncer zapcore.WriteSyncer, err error) {
 	}
 	if zapConfig.LogInRotatefile {
 		// create directory for storing log files
-		if err = util.CreateDirs(zapConfig.Directory); err != nil {
+		if err = util.CreateDirs(zapConfig.LogDir); err != nil {
 			return
 		}
 		var fileWriter = &lumberjack.Logger{

@@ -7,4 +7,8 @@ services:
     restart: always
     container_name: mihoyo-bbs-genshin-sign
     ports:
-      - "5001:5001"
+      - "5002:5001"
+    volumes:
+      - "./sign_config:/app/sign_config"
+      - "./sign_data:/app/sign_data"
+      - "./sign_log:/app/sign_log"

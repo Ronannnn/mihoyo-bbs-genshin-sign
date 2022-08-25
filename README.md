@@ -5,7 +5,7 @@ This is a tool to sign for Mihoyo Chinese BBS Genshin Impact.
 ## How to use
 
 ```bash
-docker run -d -p 5001:5001 ronannnn/mihoyo-bbs-genshin-sign:latest
+docker run -d -p 5001:5001 -v ./sign_config:/app/sign_config -v ./sign_data:/app/sign_data -v ./sign_log:/app/sign_log ronannnn/mihoyo-bbs-genshin-sign:latest
 ```
 
 Or you can download [docker-compose.yaml](https://github.com/Ronannnn/mihoyo-bbs-genshin-sign/blob/main/docker-compose.yaml)
