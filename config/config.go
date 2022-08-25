@@ -51,6 +51,10 @@ func init() {
 			if err = util.WriteYaml(DefaultConfigFilename, defaultConfig); err != nil {
 				panic(err)
 			}
+			// read config file again after creating
+			if err = viper.ReadInConfig(); err != nil {
+				panic(err)
+			}
 		} else {
 			panic(err)
 		}
