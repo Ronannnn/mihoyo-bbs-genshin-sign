@@ -1,6 +1,10 @@
-docker-build:
+stages:
+  - tag-build # build when a tag is pushed
+  - manual-build # build when approved manually for each commit
+
+tag-build:
   image: docker:latest
-  stage: build
+  stage: tag-build
   services:
     - docker:dind
   before_script:
@@ -14,3 +18,17 @@ docker-build:
   # Run this job when a tag is pushed
   only:
     - tags
+
+manual-build:
+  image: docker:latest
+  stage: manual-build
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_DOCKER_HUB_USER" -p "$CI_DOCKER_HUB_PASSWORD" $CI_DOCKER_HUB_REGISTRY
+  script:
+    # buildx with linux/arm64 and linux/amd64
+    - docker buildx create --use
+    - docker buildx build --push --platform linux/amd64,linux/arm64 -t "$CI_DOCKER_HUB_USER/$CI_PROJECT_TITLE:latest" .
+  # manually approve to run this job
+  when: manual
