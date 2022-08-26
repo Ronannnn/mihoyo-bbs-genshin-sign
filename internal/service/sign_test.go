@@ -2,7 +2,7 @@ package service_test
 
 import (
 	"github.com/stretchr/testify/assert"
-	"mihoyo-bbs-genshin-sign/service"
+	"mihoyo-bbs-genshin-sign/internal/service"
 	"testing"
 )
 

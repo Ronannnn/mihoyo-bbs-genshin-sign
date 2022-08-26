@@ -18,7 +18,7 @@ type DbConf struct {
 	DbFilename string `mapstructure:"db-filename" yaml:"db-filename"`
 }
 
-func initDb(sysConf systemConf, dbConf DbConf) (err error) {
+func initDb(dbConf DbConf) (err error) {
 	if err = CloseDb(Db); err != nil {
 		return
 	}

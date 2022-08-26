@@ -1,9 +1,9 @@
 package api
 
 import (
-	"mihoyo-bbs-genshin-sign/config"
-	"mihoyo-bbs-genshin-sign/model"
-	"mihoyo-bbs-genshin-sign/service"
+	"mihoyo-bbs-genshin-sign/internal/config"
+	"mihoyo-bbs-genshin-sign/internal/model"
+	"mihoyo-bbs-genshin-sign/internal/service"
 	"strconv"
 
 	"github.com/gin-gonic/gin"

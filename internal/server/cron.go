@@ -2,8 +2,8 @@ package server
 
 import (
 	"github.com/robfig/cron/v3"
-	"mihoyo-bbs-genshin-sign/config"
-	"mihoyo-bbs-genshin-sign/service"
+	"mihoyo-bbs-genshin-sign/internal/config"
+	"mihoyo-bbs-genshin-sign/internal/service"
 )
 
 func NewCronTask() (c *cron.Cron, err error) {

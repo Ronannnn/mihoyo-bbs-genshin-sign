@@ -3,7 +3,7 @@ package model
 import (
 	"errors"
 	"gorm.io/gorm"
-	"mihoyo-bbs-genshin-sign/config"
+	"mihoyo-bbs-genshin-sign/internal/config"
 	"time"
 )
 

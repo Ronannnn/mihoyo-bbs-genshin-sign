@@ -2,7 +2,7 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"mihoyo-bbs-genshin-sign/api"
+	"mihoyo-bbs-genshin-sign/internal/api"
 )
 
 func newRouter() *gin.Engine {
