@@ -2,7 +2,7 @@ package server
 
 import (
 	"context"
-	"mihoyo-bbs-genshin-sign/config"
+	"mihoyo-bbs-genshin-sign/internal/config"
 	"net/http"
 
 	"go.uber.org/zap"

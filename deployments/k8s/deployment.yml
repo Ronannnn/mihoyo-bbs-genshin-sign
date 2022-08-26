@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mihoyo-bbs-genshin-sign-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mihoyo-bbs-genshin-sign
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: mihoyo-bbs-genshin-sign
+    spec:
+      containers:
+      - name: mihoyo
+        image: ronannnn/mihoyo-bbs-genshin-sign:0.1.0
+        ports:
+        - name: server-port
+          containerPort: 5001
+        - name: metrics-port
+          containerPort: 9900

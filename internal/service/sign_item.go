@@ -3,7 +3,7 @@ package service
 import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
-	"mihoyo-bbs-genshin-sign/model"
+	"mihoyo-bbs-genshin-sign/internal/model"
 	"time"
 )
 

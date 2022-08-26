@@ -1,7 +1,7 @@
 package config
 
 import (
-	"mihoyo-bbs-genshin-sign/util"
+	"mihoyo-bbs-genshin-sign/internal/util"
 	"time"
 
 	"github.com/fsnotify/fsnotify"
@@ -88,7 +88,7 @@ func loadConfig() (err error) {
 		return
 	}
 	Logger.Debug("Log loaded")
-	if err = initDb(Conf.System, Conf.Db); err != nil {
+	if err = initDb(Conf.Db); err != nil {
 		return
 	}
 	Logger.Debug("Db loaded")

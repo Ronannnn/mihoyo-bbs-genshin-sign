@@ -2,7 +2,7 @@ package config
 
 import (
 	"gopkg.in/natefinch/lumberjack.v2"
-	"mihoyo-bbs-genshin-sign/util"
+	"mihoyo-bbs-genshin-sign/internal/util"
 	"os"
 	"time"
 

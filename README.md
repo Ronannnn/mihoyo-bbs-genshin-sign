@@ -14,7 +14,7 @@ docker run -d \
 ronannnn/mihoyo-bbs-genshin-sign:latest
 ```
 
-Or you can download [docker-compose.yaml](https://github.com/Ronannnn/mihoyo-bbs-genshin-sign/blob/main/docker-compose.yaml)
+Or you can download [docker-compose.yaml](https://github.com/Ronannnn/mihoyo-bbs-genshin-sign/blob/main/deployments/docker-compose/docker-compose.yaml)
 and
 ```bash
 docker-compose up -d
@@ -22,7 +22,7 @@ docker-compose up -d
 
 ## BBS Service
 
-See more details in `service/sign.go`
+See more details in `internal/service/sign.go`
 
 ## API
 
