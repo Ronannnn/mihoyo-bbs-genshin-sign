@@ -17,12 +17,16 @@ type Config struct {
 }
 
 type systemConf struct {
-	Addr string `mapstructure:"addr" yaml:"addr"`
+	Addr                    string `mapstructure:"addr" yaml:"addr"`
+	EnablePrometheusMetrics bool   `mapstructure:"enable-prometheus-metrics" yaml:"enable-prometheus-metrics"`
+	PrometheusMetricsAddr   string `mapstructure:"prometheus-metrics-addr" yaml:"prometheus-metrics-addr"`
 }
 
 var defaultConfig = Config{
 	System: systemConf{
-		Addr: "0.0.0.0:5001",
+		Addr:                    "0.0.0.0:5001",
+		EnablePrometheusMetrics: true,
+		PrometheusMetricsAddr:   "0.0.0.0:9900",
 	},
 	Zap: zapConf{
 		Level:           "info",

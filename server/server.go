@@ -18,9 +18,10 @@ func NewServer(ctx context.Context) {
 		}
 	}()
 
+	router := newRouter()
 	server := &http.Server{
 		Addr:    conf.System.Addr,
-		Handler: newRouter(),
+		Handler: router,
 	}
 
 	go func() {
@@ -34,6 +35,8 @@ func NewServer(ctx context.Context) {
 			}
 		}
 	}()
+
+	go NewPrometheusGinExporter(router)
 
 	go func() {
 		if cron, err := NewCronTask(); err != nil {

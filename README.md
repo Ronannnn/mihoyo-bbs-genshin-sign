@@ -10,6 +10,7 @@ docker run -d \
 -v $(pwd)/sign_data:/app/sign_data \
 -v $(pwd)/sign_log:/app/sign_log \
 -p 5001:5001 \
+-p 9900:9900 \
 ronannnn/mihoyo-bbs-genshin-sign:latest
 ```
 

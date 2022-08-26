@@ -2,6 +2,8 @@
 
 system:
   addr: ''
+  enable-prometheus-metrics: true
+  prometheus-metrics-addr: ''
 
 db:
   db-filename: ''
