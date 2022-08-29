@@ -39,7 +39,7 @@ func NewServer(ctx context.Context) {
 	go NewPrometheusGinExporter(router)
 
 	go func() {
-		if cron, err := NewCronTask(); err != nil {
+		if cron, err := NewCronTask(conf.Cron); err != nil {
 			log.Error("Fail to create cron task", err)
 		} else {
 			cron.Run()

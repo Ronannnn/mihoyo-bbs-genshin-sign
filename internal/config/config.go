@@ -14,12 +14,17 @@ type Config struct {
 	System systemConf `mapstructure:"system" yaml:"system"`
 	Zap    zapConf    `mapstructure:"zap" yaml:"zap"`
 	Db     DbConf     `mapstructure:"db" yaml:"db"`
+	Cron   CronConf   `mapstructure:"cron" yaml:"cron"`
 }
 
 type systemConf struct {
 	Addr                    string `mapstructure:"addr" yaml:"addr"`
 	EnablePrometheusMetrics bool   `mapstructure:"enable-prometheus-metrics" yaml:"enable-prometheus-metrics"`
 	PrometheusMetricsAddr   string `mapstructure:"prometheus-metrics-addr" yaml:"prometheus-metrics-addr"`
+}
+
+type CronConf struct {
+	Crontab string `mapstructure:"crontab" yaml:"crontab"`
 }
 
 var defaultConfig = Config{
@@ -37,6 +42,9 @@ var defaultConfig = Config{
 	},
 	Db: DbConf{
 		DbFilename: "sign.db",
+	},
+	Cron: CronConf{
+		Crontab: "0 0 * * *",
 	},
 }
 
