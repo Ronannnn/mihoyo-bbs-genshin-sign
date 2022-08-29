@@ -29,6 +29,6 @@ manual-build:
   script:
     # buildx with linux/arm64 and linux/amd64
     - docker buildx create --use
-    - docker buildx build --push --platform linux/amd64,linux/arm64 -t "$CI_DOCKER_HUB_USER/$CI_PROJECT_TITLE:latest" .
+    - docker buildx build --push --platform linux/amd64,linux/arm64 -t "$CI_DOCKER_HUB_USER/$CI_PROJECT_TITLE:test" .
   # manually approve to run this job
   when: manual
