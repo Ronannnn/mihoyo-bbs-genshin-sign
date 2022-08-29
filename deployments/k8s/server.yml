@@ -15,7 +15,7 @@ spec:
       containers:
         - name: mihoyo
           image: ronannnn/mihoyo-bbs-genshin-sign:latest
-          imagePullPolicy: always
+          imagePullPolicy: Always
           ports:
             - containerPort: 5001
             - containerPort: 9900
