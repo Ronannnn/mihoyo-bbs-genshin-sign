@@ -26,4 +26,4 @@ See more details in `internal/service/sign.go`
 
 ## API
 
-[APIs](https://editor.swagger.io/?url=https://raw.githubusercontent.com/Ronannnn/mihoyo-bbs-genshin-sign/main/swagger.yaml)
+[APIs](https://editor.swagger.io/?url=https://raw.githubusercontent.com/Ronannnn/mihoyo-bbs-genshin-sign/main/api/swagger.yaml)
