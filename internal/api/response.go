@@ -13,6 +13,7 @@ type Response struct {
 	ErrorCode    string      `json:"errorCode"`
 	ErrorMessage string      `json:"errorMessage"`
 	ShowType     ShowType    `json:"showType"`
+	ServerId     string      `json:"serverId"`
 }
 
 const (
@@ -44,6 +45,7 @@ func Result(success bool, data interface{}, errMsg string, showType ShowType, c 
 		NormalError,
 		errMsg,
 		showType,
+		ServerId,
 	})
 }
 
